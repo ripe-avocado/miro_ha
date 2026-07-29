@@ -29,6 +29,7 @@ from .const import (
     DEFAULT_SCAN_INTERVAL,
     DOMAIN,
     IDLE_SCAN_INTERVAL,
+    SYNC_INTERVAL,
 )
 from .models import ModelSpec, get_model, preload
 
@@ -104,6 +105,8 @@ class MiroCoordinator(DataUpdateCoordinator[dict[str, dict[str, Any]]]):
         self._confirm_unsub: CALLBACK_TYPE | None = None
         # serial -> (유효 시각, 낙관적으로 넣어 둔 값)
         self._optimistic: dict[str, tuple[float, dict[str, Any]]] = {}
+        # 마지막으로 기기를 깨운(sync) 시각. 0 이면 첫 조회에서 바로 깨운다.
+        self._last_sync = 0.0
 
     async def async_load_devices(self) -> None:
         """등록된 기기 목록을 읽어온다. 셋업 시 1회만 호출한다."""
@@ -189,19 +192,33 @@ class MiroCoordinator(DataUpdateCoordinator[dict[str, dict[str, Any]]]):
             )
 
     async def _async_query(self, serials: list[str]) -> dict[str, dict[str, Any]]:
-        """상태를 읽는다. sync 가 실패하면 서버 캐시라도 읽어 온다.
+        """상태를 읽는다. 평소에는 기기를 깨우지 않고 서버 캐시만 읽는다.
 
-        sync 조회는 기기가 응답할 때까지 기다리므로 기기 사정에 따라 실패한다.
-        그때도 서버 캐시에는 직전 값이 남아 있으니, 그걸 읽으면 조금 낡았을 뿐
-        멀쩡한 상태를 돌려줄 수 있다.
+        실측(2026-07-29): 기기는 전원·풍량·회전이 바뀌면 몇 초 안에 스스로
+        상태를 올린다. 선풍기 MF03 과 가습기 NR07 에서 7번 모두 확인했다.
+        그래서 조작 변화는 캐시만 읽어도 다 잡힌다.
+
+        다만 변화가 없으면 아무것도 올리지 않아 온습도·배터리가 그대로 멈춘다.
+        그 값들을 새로 받고 혹시 놓친 변화를 바로잡으려고 SYNC_INTERVAL 마다
+        한 번씩만 기기를 깨운다.
+
+        sync 조회는 기기 응답을 기다리므로 기기 사정에 따라 실패한다.
+        그때는 캐시라도 읽어 조금 낡았을 뿐 멀쩡한 상태를 돌려준다.
         """
+        if time.monotonic() - self._last_sync < SYNC_INTERVAL:
+            return await self.client.async_query(serials, sync=False)
+
         try:
-            return await self.client.async_query(serials, sync=True)
+            states = await self.client.async_query(serials, sync=True)
         except MiroAuthError:
             raise
         except MiroError as err:
+            # 다음 주기에 다시 시도하도록 _last_sync 는 갱신하지 않는다.
             _LOGGER.debug("sync 조회 실패, 서버 캐시 조회로 대체한다: %s", err)
             return await self.client.async_query(serials, sync=False)
+
+        self._last_sync = time.monotonic()
+        return states
 
     async def _async_update_data(self) -> dict[str, dict[str, Any]]:
         if not self.devices:
@@ -321,4 +338,8 @@ class MiroCoordinator(DataUpdateCoordinator[dict[str, dict[str, Any]]]):
 
         self._persist_token()
         self._apply_optimistic(serial, command)
+        # 확인 조회만큼은 기기를 깨워서 실제로 먹었는지 본다. 캐시만 읽으면
+        # 기기가 아직 보고하기 전이라 방금 바꾼 값이 안 담겨 있을 수 있고,
+        # 그러면 낙관적 반영이 만료되는 순간 화면이 옛 값으로 되돌아간다.
+        self._last_sync = 0.0
         self._schedule_confirm()
