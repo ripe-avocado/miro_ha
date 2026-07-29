@@ -140,6 +140,8 @@ SmartThings 연동에서 풍량 4단계·회전 2종으로 뭉개지던 것과 �
 - 인터넷 연결이 끊긴 기기는 엔티티가 `unavailable` 로 표시됩니다.
 - 표에 없는 새 모델을 쓰면 On/Off와 센서만 만들어집니다.
   `python3 tools/gen_models.py --download` 로 표를 갱신할 수 있습니다.
+- 통합 아이콘은 **Home Assistant 2026.3 이상**에서만 보입니다. 그 아래 버전에서는
+  `icon not available` 로 남지만 동작에는 아무 영향이 없습니다.
 
 ## 도구
 
