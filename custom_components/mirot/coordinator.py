@@ -3,21 +3,27 @@
 from __future__ import annotations
 
 import logging
+import time
 from datetime import timedelta
 from typing import Any
 
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import HomeAssistant
+from homeassistant.core import CALLBACK_TYPE, HomeAssistant, callback
 from homeassistant.exceptions import (
     ConfigEntryAuthFailed,
     ConfigEntryNotReady,
     HomeAssistantError,
 )
+from homeassistant.helpers.event import async_call_later
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from . import capabilities
 from .api import MiroAuthError, MiroClient, MiroError
 from .const import (
+    ATTR_FAN_SPEED,
+    ATTR_POWER,
+    ATTR_ROTATION_MODE,
+    ATTR_ROTATION_RANGE,
     CONF_ACCESS_TOKEN,
     CONF_SCAN_INTERVAL,
     DEFAULT_SCAN_INTERVAL,
@@ -33,6 +39,35 @@ _LOGGER = logging.getLogger(__name__)
 # 놓치는 일이 드물지 않고, 다음 주기에는 대개 성공한다. 그때마다 엔티티를
 # 전부 떨어뜨리면 화면이 깜빡이고 가용성 조건을 건 자동화가 오작동한다.
 MAX_CONSECUTIVE_FAILURES = 3
+
+# 제어 직후 서버 캐시가 새 값으로 채워지기까지 걸리는 시간(초).
+#
+# 조회는 기기에 보고를 지시하고 '직전' 값을 돌려준다. 새 값은 약 1초 뒤에야
+# 캐시에 들어가므로, 명령 직후 곧바로 물으면 방금 바꾼 값이 아니라 옛 값이
+# 온다. 화면이 되돌아간 것처럼 보이므로 조금 기다렸다 확인한다.
+CONFIRM_DELAY = 1.5
+
+
+def coupled_changes(command: dict[str, Any]) -> dict[str, Any]:
+    """명령 하나가 기기 안에서 함께 바꾸는 다른 속성.
+
+    화면을 먼저 맞춰 둘 때 이걸 빠뜨리면 오히려 틀린 값을 보여준다.
+    예를 들어 꺼져 있는 선풍기에 풍량만 반영하면 전원이 Off 인 채라
+    풍량이 0%로 표시된다. 둘 다 실기기에서 확인된 동작이다.
+    """
+    extra: dict[str, Any] = {}
+
+    if ATTR_FAN_SPEED in command:
+        # 풍량을 보내면 꺼져 있던 기기도 함께 켜진다.
+        extra[ATTR_POWER] = "On"
+
+    if ATTR_ROTATION_RANGE in command:
+        # 회전 범위가 0이 아니면 회전이 켜지고, 0이면 꺼진다.
+        value = command[ATTR_ROTATION_RANGE]
+        if isinstance(value, (int, float)):
+            extra[ATTR_ROTATION_MODE] = "On" if value > 0 else "Off"
+
+    return extra
 
 
 class MiroCoordinator(DataUpdateCoordinator[dict[str, dict[str, Any]]]):
@@ -59,6 +94,10 @@ class MiroCoordinator(DataUpdateCoordinator[dict[str, dict[str, Any]]]):
         self.specs: dict[str, ModelSpec] = {}
         # 연속 실패 횟수. 성공하면 0으로 돌아간다.
         self._failures = 0
+        # 제어 후 확인 조회 예약. 연달아 조작하면 마지막 것 하나만 남는다.
+        self._confirm_unsub: CALLBACK_TYPE | None = None
+        # serial -> (유효 시각, 낙관적으로 넣어 둔 값)
+        self._optimistic: dict[str, tuple[float, dict[str, Any]]] = {}
 
     async def async_load_devices(self) -> None:
         """등록된 기기 목록을 읽어온다. 셋업 시 1회만 호출한다."""
@@ -180,10 +219,66 @@ class MiroCoordinator(DataUpdateCoordinator[dict[str, dict[str, Any]]]):
 
         self._failures = 0
         self._persist_token()
+        self._merge_optimistic(states)
         return states
 
+    # --- 제어 -------------------------------------------------------------
+
+    def _apply_optimistic(self, serial: str, command: dict[str, Any]) -> None:
+        """명령이 먹었다고 보고 화면을 먼저 바꾼다.
+
+        기기는 명령을 받은 즉시 움직이는데 서버 캐시는 1초쯤 늦게 따라온다.
+        그 사이를 비워 두면 토글을 눌러도 몇 초간 아무 반응이 없어 보인다.
+        여기서 넣은 값은 곧이어 오는 실제 조회 결과로 덮인다.
+        """
+        values = {**command, **coupled_changes(command)}
+
+        # 확인 조회가 오기 전에 정기 폴링이 끼어들면 아직 옛 값을 들고 온다.
+        # 그게 화면을 되돌리지 않도록, 잠깐은 이 값이 이기게 해 둔다.
+        expiry = time.monotonic() + CONFIRM_DELAY
+        previous = self._optimistic.get(serial)
+        pending = dict(previous[1]) if previous else {}
+        pending.update(values)
+        self._optimistic[serial] = (expiry, pending)
+
+        state = (self.data or {}).get(serial)
+        if state is None:
+            return
+        state.update(values)
+        self.async_update_listeners()
+
+    def _merge_optimistic(self, states: dict[str, dict[str, Any]]) -> None:
+        """아직 유효한 낙관적 값을 조회 결과 위에 덮는다."""
+        now = time.monotonic()
+        for serial, (expiry, values) in list(self._optimistic.items()):
+            if now >= expiry:
+                del self._optimistic[serial]
+                continue
+            state = states.get(serial)
+            if state is not None:
+                state.update(values)
+
+    @callback
+    def _schedule_confirm(self) -> None:
+        """서버 캐시가 채워질 즈음 실제 값을 한 번 읽어 확정한다."""
+        if self._confirm_unsub is not None:
+            self._confirm_unsub()
+        self._confirm_unsub = async_call_later(
+            self.hass, CONFIRM_DELAY, self._async_confirm
+        )
+
+    async def _async_confirm(self, _now: Any) -> None:
+        self._confirm_unsub = None
+        await self.async_request_refresh()
+
+    async def async_shutdown(self) -> None:
+        if self._confirm_unsub is not None:
+            self._confirm_unsub()
+            self._confirm_unsub = None
+        await super().async_shutdown()
+
     async def async_send(self, serial: str, command: dict[str, Any]) -> None:
-        """명령 하나를 보내고 곧바로 상태를 다시 읽는다."""
+        """명령 하나를 보낸다."""
         try:
             await self.client.async_execute(serial, [command])
         except MiroAuthError as err:
@@ -193,5 +288,5 @@ class MiroCoordinator(DataUpdateCoordinator[dict[str, dict[str, Any]]]):
             raise HomeAssistantError(f"제어 실패: {err}") from err
 
         self._persist_token()
-        # 반영에 1초 안팎이 걸린다. 다음 폴링을 앞당겨 UI 지연을 줄인다.
-        await self.async_request_refresh()
+        self._apply_optimistic(serial, command)
+        self._schedule_confirm()
