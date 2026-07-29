@@ -31,6 +31,16 @@ def _table() -> dict[str, Any]:
         return {"models": {}}
 
 
+def preload() -> None:
+    """표를 미리 읽어 캐시에 채운다.
+
+    파일 읽기라서 HA 이벤트 루프에서 그냥 부르면 루프를 막는다.
+    셋업 때 executor 로 한 번 불러 두면 이후 get_model() 은 lru_cache 에
+    걸려 파일을 다시 건드리지 않는다.
+    """
+    _table()
+
+
 class ControlSpec:
     """어떤 속성을 어떤 값으로 제어할 수 있는지."""
 

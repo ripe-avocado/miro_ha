@@ -23,9 +23,16 @@ from .const import (
     DEFAULT_SCAN_INTERVAL,
     DOMAIN,
 )
-from .models import ModelSpec, get_model
+from .models import ModelSpec, get_model, preload
 
 _LOGGER = logging.getLogger(__name__)
+
+# 상태 조회가 몇 번 연속 실패해야 엔티티를 '사용 안 됨' 으로 볼 것인가.
+#
+# sync 조회는 기기가 5초 안에 응답하기를 기다린다. 무선 기기라 한 주기쯤
+# 놓치는 일이 드물지 않고, 다음 주기에는 대개 성공한다. 그때마다 엔티티를
+# 전부 떨어뜨리면 화면이 깜빡이고 가용성 조건을 건 자동화가 오작동한다.
+MAX_CONSECUTIVE_FAILURES = 3
 
 
 class MiroCoordinator(DataUpdateCoordinator[dict[str, dict[str, Any]]]):
@@ -50,9 +57,14 @@ class MiroCoordinator(DataUpdateCoordinator[dict[str, dict[str, Any]]]):
         self.devices: dict[str, dict[str, Any]] = {}
         # serialno -> 모델 정의
         self.specs: dict[str, ModelSpec] = {}
+        # 연속 실패 횟수. 성공하면 0으로 돌아간다.
+        self._failures = 0
 
     async def async_load_devices(self) -> None:
         """등록된 기기 목록을 읽어온다. 셋업 시 1회만 호출한다."""
+        # 모델 표는 파일에서 읽으므로 이벤트 루프 밖에서 미리 채워 둔다.
+        await self.hass.async_add_executor_job(preload)
+
         try:
             self.devices = await self.client.async_get_devices()
         except MiroAuthError as err:
@@ -131,17 +143,42 @@ class MiroCoordinator(DataUpdateCoordinator[dict[str, dict[str, Any]]]):
                 self.entry, data={**self.entry.data, CONF_ACCESS_TOKEN: token}
             )
 
+    async def _async_query(self, serials: list[str]) -> dict[str, dict[str, Any]]:
+        """상태를 읽는다. sync 가 실패하면 서버 캐시라도 읽어 온다.
+
+        sync 조회는 기기가 응답할 때까지 기다리므로 기기 사정에 따라 실패한다.
+        그때도 서버 캐시에는 직전 값이 남아 있으니, 그걸 읽으면 조금 낡았을 뿐
+        멀쩡한 상태를 돌려줄 수 있다.
+        """
+        try:
+            return await self.client.async_query(serials, sync=True)
+        except MiroAuthError:
+            raise
+        except MiroError as err:
+            _LOGGER.debug("sync 조회 실패, 서버 캐시 조회로 대체한다: %s", err)
+            return await self.client.async_query(serials, sync=False)
+
     async def _async_update_data(self) -> dict[str, dict[str, Any]]:
         if not self.devices:
             return {}
 
         try:
-            states = await self.client.async_query(list(self.devices), sync=True)
+            states = await self._async_query(list(self.devices))
         except MiroAuthError as err:
             raise ConfigEntryAuthFailed(str(err)) from err
         except MiroError as err:
+            self._failures += 1
+            if self.data and self._failures < MAX_CONSECUTIVE_FAILURES:
+                # 일시적인 실패다. 직전 값을 유지해 엔티티를 살려 둔다.
+                _LOGGER.debug(
+                    "상태 조회 %d회 연속 실패, 직전 값을 유지한다: %s",
+                    self._failures,
+                    err,
+                )
+                return self.data
             raise UpdateFailed(f"상태 조회 실패: {err}") from err
 
+        self._failures = 0
         self._persist_token()
         return states
 
