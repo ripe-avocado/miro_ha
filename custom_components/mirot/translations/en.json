@@ -1,0 +1,79 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "MIRO account",
+        "description": "Sign in with the account you use in the 'MIRO SmartHome' app. MIRO runs two separate apps -- 'MIRO SmartHome' and 'MIRO HomeLink' -- on different servers. If your device is registered in 'MIRO HomeLink', it will not work here.",
+        "data": {
+          "username": "ID",
+          "password": "Password"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Re-authenticate MIRO",
+        "description": "The stored session for {username} has expired. Enter the password again.",
+        "data": {
+          "password": "Password"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Cannot reach the MIRO server.",
+      "invalid_auth": "Invalid ID or password."
+    },
+    "abort": {
+      "already_configured": "This account is already set up.",
+      "reauth_successful": "Re-authentication was successful."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Options",
+        "data": {
+          "scan_interval": "Polling interval (seconds)"
+        },
+        "data_description": {
+          "scan_interval": "How often to ask the device for its state. Shorter is more responsive but makes more cloud requests."
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "timer_remaining": { "name": "Timer remaining" },
+      "pm25": { "name": "PM2.5" },
+      "pm10": { "name": "PM10" },
+      "gas_mixture": { "name": "Gas level" },
+      "filter_life": { "name": "Filter life" }
+    },
+    "binary_sensor": {
+      "battery_installed": { "name": "Battery installed" },
+      "empty_water": { "name": "Water empty" },
+      "filter_expired": { "name": "Filter expired" },
+      "remote_paired": { "name": "Remote paired" }
+    },
+    "select": {
+      "rotation_range": { "name": "Rotation range" },
+      "timer": { "name": "Timer" },
+      "steam_level": { "name": "Steam level" },
+      "operation_mode": { "name": "Operation mode" },
+      "light_mode": { "name": "Light" },
+      "light_color": { "name": "Light color" },
+      "brightness": { "name": "Brightness" },
+      "ptc_level": { "name": "Heater level" },
+      "stage": { "name": "Diffusion stage" },
+      "fragrance": { "name": "Fragrance" },
+      "ventilation_mode": { "name": "Ventilation mode" }
+    },
+    "switch": {
+      "device_lock": { "name": "Child lock" },
+      "mute": { "name": "Sound" },
+      "ultra_violet": { "name": "UV sterilization" },
+      "snooze": { "name": "Snooze" },
+      "power_mode": { "name": "Power saving" },
+      "rotation_mode": { "name": "Oscillation" },
+      "rotation_mode_vertical": { "name": "Vertical oscillation" }
+    }
+  }
+}

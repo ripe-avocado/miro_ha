@@ -1,0 +1,77 @@
+name: 버그 신고
+description: 통합이 동작하지 않거나 상태가 이상할 때
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **먼저 확인해주세요.** 미로는 **미로 스마트홈**과 **미로 홈링크** 두 앱을 따로 운영하며
+        서버가 서로 다릅니다. 이 통합은 **미로 스마트홈**에 등록된 기기만 다룹니다.
+        폰에서 앱을 열어 그 기기가 어느 쪽에 보이는지 확인해주세요.
+
+  - type: checkboxes
+    id: app
+    attributes:
+      label: 사용 중인 앱
+      options:
+        - label: 그 기기가 **미로 스마트홈** 앱에 보입니다
+          required: true
+
+  - type: input
+    id: model
+    attributes:
+      label: 기기 모델
+      description: 예 MF03, NR07. 모르시면 앱 기기 상세 화면에서 확인할 수 있습니다.
+    validations:
+      required: true
+
+  - type: input
+    id: versions
+    attributes:
+      label: 버전
+      description: Home Assistant 버전 / 이 통합 버전
+      placeholder: "HA 2025.7.1 / miro_ha 0.2.0"
+    validations:
+      required: true
+
+  - type: textarea
+    id: what
+    attributes:
+      label: 무슨 일이 일어났나요
+      description: 무엇을 하려 했고, 실제로 어떻게 됐는지 적어주세요.
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 로그
+      description: |
+        설정 → 시스템 → 로그에서 `mirot` 으로 검색해 관련 부분을 붙여주세요.
+        더 자세히 보시려면 `configuration.yaml` 에 아래를 넣고 재시작하세요.
+
+        ```yaml
+        logger:
+          logs:
+            custom_components.mirot: debug
+        ```
+
+        **붙이기 전에 아이디·비밀번호·토큰이 섞여 있지 않은지 확인해주세요.**
+      render: shell
+
+  - type: textarea
+    id: raw
+    attributes:
+      label: 기기 응답 (선택)
+      description: |
+        원인을 가리는 데 큰 도움이 됩니다. 저장소를 받아 아래를 실행한 결과를 붙여주세요.
+
+        ```bash
+        pip3 install requests cryptography
+        python3 tools/miro_cli.py login
+        python3 tools/miro_cli.py devices --raw-json
+        python3 tools/miro_cli.py status
+        ```
+
+        **시리얼 번호는 가려도 됩니다.**
+      render: json

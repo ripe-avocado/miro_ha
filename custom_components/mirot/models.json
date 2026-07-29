@@ -1,0 +1,1275 @@
+{
+ "ui_version": "0.1.28",
+ "_comment": "tools/gen_models.py 로 서버 UI 메타데이터에서 생성. 직접 고치지 말 것.",
+ "models": {
+  "AP500": {
+   "category": "air_purifier",
+   "type_label": "공기청정기",
+   "product": "에어레스트 공기청정기",
+   "model_number": "AP500IoT",
+   "controls": {
+    "Power": {
+     "kind": "toggle"
+    },
+    "OperationMode": {
+     "kind": "enum",
+     "values": [
+      "Manual",
+      "Auto",
+      "Sleep"
+     ]
+    },
+    "FanSpeed": {
+     "kind": "int_enum",
+     "values": [
+      1,
+      2,
+      3,
+      4
+     ]
+    },
+    "Timer": {
+     "kind": "int_enum",
+     "values": [
+      0,
+      2,
+      4,
+      8,
+      12
+     ]
+    },
+    "DeviceLock": {
+     "kind": "toggle"
+    },
+    "Mute": {
+     "kind": "toggle"
+    }
+   }
+  },
+  "AR05": {
+   "category": "humidifier",
+   "type_label": "가습기",
+   "product": "간편세척 초음파 가습기",
+   "model_number": "AR05",
+   "controls": {
+    "OperationMode": {
+     "kind": "enum",
+     "values": [
+      "Auto",
+      "Manual"
+     ]
+    },
+    "SteamLevel": {
+     "kind": "enum",
+     "values": [
+      "Off",
+      "Low",
+      "Mid",
+      "High"
+     ]
+    },
+    "Timer": {
+     "kind": "int_enum",
+     "values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+     ]
+    }
+   }
+  },
+  "DF01": {
+   "category": "diffuser",
+   "type_label": "디퓨저",
+   "product": "미로 디퓨저",
+   "model_number": "MSD100",
+   "controls": {
+    "Power": {
+     "kind": "toggle"
+    },
+    "Stage": {
+     "kind": "int_enum",
+     "values": [
+      1,
+      2,
+      3,
+      4,
+      5
+     ]
+    },
+    "Timer": {
+     "kind": "int_enum",
+     "values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ]
+    },
+    "PowerMode": {
+     "kind": "toggle"
+    },
+    "Snooze": {
+     "kind": "toggle"
+    },
+    "DeviceLock": {
+     "kind": "toggle"
+    }
+   }
+  },
+  "DIF01": {
+   "category": "diffuser",
+   "type_label": "디퓨저",
+   "product": "오운플로 디퓨저",
+   "model_number": "DIF01",
+   "controls": {
+    "Power": {
+     "kind": "toggle"
+    },
+    "FanSpeed": {
+     "kind": "int_enum",
+     "values": [
+      1,
+      2,
+      3
+     ]
+    },
+    "Timer": {
+     "kind": "int_enum",
+     "values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ]
+    },
+    "OperationMode": {
+     "kind": "enum",
+     "values": [
+      "Manual",
+      "Natural"
+     ]
+    },
+    "Fragrance": {
+     "kind": "enum",
+     "values": [
+      "First",
+      "Second",
+      "Third"
+     ]
+    }
+   }
+  },
+  "DIF02": {
+   "category": "diffuser",
+   "type_label": "디퓨저",
+   "product": "오운플로 디퓨저",
+   "model_number": "DIF02",
+   "controls": {
+    "Power": {
+     "kind": "toggle"
+    },
+    "Stage": {
+     "kind": "int_enum",
+     "values": [
+      1,
+      2,
+      3,
+      4,
+      5
+     ]
+    },
+    "Timer": {
+     "kind": "int_enum",
+     "values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+     ]
+    },
+    "PowerMode": {
+     "kind": "toggle"
+    },
+    "Snooze": {
+     "kind": "toggle"
+    },
+    "DeviceLock": {
+     "kind": "toggle"
+    }
+   }
+  },
+  "MAF01": {
+   "category": "fan",
+   "type_label": "선풍기",
+   "product": "미로 선풍기",
+   "model_number": "W-FS1223-R",
+   "controls": {
+    "Power": {
+     "kind": "toggle"
+    },
+    "FanSpeed": {
+     "kind": "int_enum",
+     "values": [
+      1,
+      2,
+      3
+     ]
+    },
+    "RotationMode": {
+     "kind": "toggle"
+    },
+    "Timer": {
+     "kind": "int_enum",
+     "values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+     ]
+    },
+    "DeviceLock": {
+     "kind": "toggle"
+    },
+    "Mute": {
+     "kind": "toggle"
+    }
+   }
+  },
+  "MC01": {
+   "category": "fan",
+   "type_label": "서큘레이터",
+   "product": "미로 서큘레이터",
+   "model_number": "BFX2201",
+   "controls": {
+    "Power": {
+     "kind": "toggle"
+    },
+    "FanSpeed": {
+     "kind": "range",
+     "min": 1,
+     "max": 24
+    },
+    "OperationMode": {
+     "kind": "enum",
+     "values": [
+      "Manual",
+      "Soft",
+      "Medium",
+      "Strong"
+     ]
+    },
+    "RotationMode": {
+     "kind": "toggle"
+    },
+    "RotationModeVertical": {
+     "kind": "toggle"
+    },
+    "Timer": {
+     "kind": "int_enum",
+     "values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+     ]
+    },
+    "DeviceLock": {
+     "kind": "toggle"
+    },
+    "Mute": {
+     "kind": "toggle"
+    }
+   }
+  },
+  "MF01": {
+   "category": "fan",
+   "type_label": "선풍기",
+   "product": "미로 선풍기",
+   "model_number": "MF01",
+   "controls": {
+    "Power": {
+     "kind": "toggle"
+    },
+    "FanSpeed": {
+     "kind": "range",
+     "min": 1,
+     "max": 100
+    },
+    "Timer": {
+     "kind": "int_enum",
+     "values": [
+      0,
+      1,
+      2,
+      4,
+      8
+     ]
+    },
+    "RotationRange": {
+     "kind": "int_enum",
+     "values": [
+      0,
+      30,
+      60,
+      90,
+      120
+     ]
+    },
+    "OperationMode": {
+     "kind": "enum",
+     "values": [
+      "Natural",
+      "Manual"
+     ]
+    },
+    "Mute": {
+     "kind": "toggle"
+    }
+   }
+  },
+  "MF02": {
+   "category": "fan",
+   "type_label": "선풍기",
+   "product": "미로 선풍기",
+   "model_number": "MF02",
+   "controls": {
+    "Power": {
+     "kind": "toggle"
+    },
+    "FanSpeed": {
+     "kind": "range",
+     "min": 1,
+     "max": 100
+    },
+    "Timer": {
+     "kind": "int_enum",
+     "values": [
+      0,
+      1,
+      2,
+      4,
+      8
+     ]
+    },
+    "RotationRange": {
+     "kind": "int_enum",
+     "values": [
+      0,
+      30,
+      60,
+      90,
+      120
+     ]
+    },
+    "OperationMode": {
+     "kind": "enum",
+     "values": [
+      "Manual",
+      "Natural",
+      "Sleep"
+     ]
+    },
+    "Mute": {
+     "kind": "toggle"
+    }
+   }
+  },
+  "MF03": {
+   "category": "fan",
+   "type_label": "선풍기",
+   "product": "미로 선풍기",
+   "model_number": "MF03",
+   "controls": {
+    "Power": {
+     "kind": "toggle"
+    },
+    "FanSpeed": {
+     "kind": "range",
+     "min": 1,
+     "max": 100
+    },
+    "OperationMode": {
+     "kind": "enum",
+     "values": [
+      "Manual",
+      "Auto",
+      "Natural",
+      "Sleep"
+     ]
+    },
+    "Timer": {
+     "kind": "int_enum",
+     "values": [
+      0,
+      1,
+      2,
+      4,
+      8
+     ]
+    },
+    "RotationRange": {
+     "kind": "int_enum",
+     "values": [
+      0,
+      30,
+      60,
+      90,
+      120
+     ]
+    }
+   }
+  },
+  "MH5000": {
+   "category": "humidifier",
+   "type_label": "가습기",
+   "product": "완벽세척 가습기",
+   "model_number": "MH5000",
+   "controls": {
+    "Power": {
+     "kind": "toggle"
+    },
+    "OperationMode": {
+     "kind": "enum",
+     "values": [
+      "Manual",
+      "Auto"
+     ]
+    },
+    "SteamLevel": {
+     "kind": "enum",
+     "values": [
+      "Off",
+      "Low",
+      "Mid",
+      "High"
+     ]
+    },
+    "Timer": {
+     "kind": "int_enum",
+     "values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+     ]
+    },
+    "LightMode": {
+     "kind": "enum",
+     "values": [
+      "Off",
+      "Fix"
+     ]
+    },
+    "Brightness": {
+     "kind": "int_enum",
+     "values": [
+      1,
+      2,
+      3
+     ]
+    },
+    "LightColor": {
+     "kind": "enum",
+     "values": [
+      "ColdWhite",
+      "WarmWhite"
+     ]
+    }
+   }
+  },
+  "MH7000": {
+   "category": "humidifier",
+   "type_label": "가습기",
+   "product": "완벽살균 가습기",
+   "model_number": "MH7000",
+   "controls": {
+    "Power": {
+     "kind": "toggle"
+    },
+    "OperationMode": {
+     "kind": "enum",
+     "values": [
+      "Manual",
+      "Auto"
+     ]
+    },
+    "SteamLevel": {
+     "kind": "enum",
+     "values": [
+      "Off",
+      "Low",
+      "Mid",
+      "High"
+     ]
+    },
+    "Timer": {
+     "kind": "int_enum",
+     "values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+     ]
+    },
+    "LightMode": {
+     "kind": "enum",
+     "values": [
+      "Off",
+      "Fix"
+     ]
+    },
+    "Brightness": {
+     "kind": "int_enum",
+     "values": [
+      1,
+      2,
+      3
+     ]
+    },
+    "LightColor": {
+     "kind": "enum",
+     "values": [
+      "ColdWhite",
+      "WarmWhite"
+     ]
+    }
+   }
+  },
+  "MH8K": {
+   "category": "humidifier",
+   "type_label": "가습기",
+   "product": "완벽살균 대용량 가습기",
+   "model_number": "MH8K",
+   "controls": {
+    "Power": {
+     "kind": "toggle"
+    },
+    "OperationMode": {
+     "kind": "enum",
+     "values": [
+      "Manual",
+      "Auto"
+     ]
+    },
+    "SteamLevel": {
+     "kind": "enum",
+     "values": [
+      "Off",
+      "Low",
+      "Mid",
+      "High"
+     ]
+    },
+    "PTCLevel": {
+     "kind": "enum",
+     "values": [
+      "Off",
+      "Low",
+      "High"
+     ]
+    },
+    "Timer": {
+     "kind": "int_enum",
+     "values": [
+      0,
+      2,
+      4,
+      6,
+      8,
+      10,
+      12,
+      14
+     ]
+    },
+    "LightMode": {
+     "kind": "enum",
+     "values": [
+      "Off",
+      "Fix"
+     ]
+    },
+    "Brightness": {
+     "kind": "int_enum",
+     "values": [
+      1,
+      2,
+      3
+     ]
+    },
+    "LightColor": {
+     "kind": "enum",
+     "values": [
+      "ColdWhite",
+      "WarmWhite"
+     ]
+    },
+    "DeviceLock": {
+     "kind": "toggle"
+    },
+    "Mute": {
+     "kind": "toggle"
+    }
+   }
+  },
+  "MH9K": {
+   "category": "humidifier",
+   "type_label": "가습기",
+   "product": "완벽살균 대용량 가습기",
+   "model_number": "MH9K",
+   "controls": {
+    "Power": {
+     "kind": "toggle"
+    },
+    "OperationMode": {
+     "kind": "enum",
+     "values": [
+      "Manual",
+      "Auto"
+     ]
+    },
+    "SteamLevel": {
+     "kind": "enum",
+     "values": [
+      "Off",
+      "Low",
+      "Mid",
+      "High"
+     ]
+    },
+    "PTCLevel": {
+     "kind": "enum",
+     "values": [
+      "Off",
+      "Low",
+      "High"
+     ]
+    },
+    "Timer": {
+     "kind": "int_enum",
+     "values": [
+      0,
+      2,
+      4,
+      6,
+      8,
+      10,
+      12,
+      14
+     ]
+    },
+    "LightMode": {
+     "kind": "enum",
+     "values": [
+      "Off",
+      "Fix"
+     ]
+    },
+    "Brightness": {
+     "kind": "int_enum",
+     "values": [
+      1,
+      2,
+      3
+     ]
+    },
+    "LightColor": {
+     "kind": "enum",
+     "values": [
+      "ColdWhite",
+      "WarmWhite"
+     ]
+    },
+    "DeviceLock": {
+     "kind": "toggle"
+    },
+    "Mute": {
+     "kind": "toggle"
+    }
+   }
+  },
+  "MP1000": {
+   "category": "air_purifier",
+   "type_label": "공기청정기",
+   "product": "미로 공기청정기",
+   "model_number": "MP1000",
+   "controls": {
+    "Power": {
+     "kind": "toggle"
+    },
+    "OperationMode": {
+     "kind": "enum",
+     "values": [
+      "Manual",
+      "Auto",
+      "Turbo",
+      "Sleep",
+      "Pet"
+     ]
+    },
+    "FanSpeed": {
+     "kind": "range",
+     "min": 1,
+     "max": 100
+    },
+    "Timer": {
+     "kind": "int_enum",
+     "values": [
+      0,
+      2,
+      4,
+      8
+     ]
+    },
+    "DeviceLock": {
+     "kind": "toggle"
+    },
+    "Mute": {
+     "kind": "toggle"
+    }
+   }
+  },
+  "MP1001": {
+   "category": "air_purifier",
+   "type_label": "공기청정기",
+   "product": "미로 공기청정기",
+   "model_number": "MP1001",
+   "controls": {
+    "Power": {
+     "kind": "toggle"
+    },
+    "OperationMode": {
+     "kind": "enum",
+     "values": [
+      "Manual",
+      "Auto",
+      "Turbo",
+      "Sleep",
+      "Pet"
+     ]
+    },
+    "FanSpeed": {
+     "kind": "range",
+     "min": 1,
+     "max": 100
+    },
+    "Timer": {
+     "kind": "int_enum",
+     "values": [
+      0,
+      2,
+      4,
+      8
+     ]
+    },
+    "DeviceLock": {
+     "kind": "toggle"
+    },
+    "Mute": {
+     "kind": "toggle"
+    }
+   }
+  },
+  "MP1002": {
+   "category": "air_purifier",
+   "type_label": "공기청정기",
+   "product": "미로 공기청정기",
+   "model_number": "MP1002",
+   "controls": {
+    "Power": {
+     "kind": "toggle"
+    },
+    "OperationMode": {
+     "kind": "enum",
+     "values": [
+      "Manual",
+      "Auto",
+      "Turbo",
+      "Sleep",
+      "Pet"
+     ]
+    },
+    "FanSpeed": {
+     "kind": "range",
+     "min": 1,
+     "max": 100
+    },
+    "Timer": {
+     "kind": "int_enum",
+     "values": [
+      0,
+      2,
+      4,
+      8
+     ]
+    },
+    "DeviceLock": {
+     "kind": "toggle"
+    },
+    "Mute": {
+     "kind": "toggle"
+    }
+   }
+  },
+  "MP1003": {
+   "category": "air_purifier",
+   "type_label": "공기청정기",
+   "product": "미로 공기청정기",
+   "model_number": "MP1003",
+   "controls": {
+    "Power": {
+     "kind": "toggle"
+    },
+    "OperationMode": {
+     "kind": "enum",
+     "values": [
+      "Manual",
+      "Auto",
+      "Turbo",
+      "Sleep",
+      "Pet"
+     ]
+    },
+    "FanSpeed": {
+     "kind": "range",
+     "min": 1,
+     "max": 100
+    },
+    "Timer": {
+     "kind": "int_enum",
+     "values": [
+      0,
+      2,
+      4,
+      8
+     ]
+    },
+    "DeviceLock": {
+     "kind": "toggle"
+    },
+    "Mute": {
+     "kind": "toggle"
+    }
+   }
+  },
+  "MP500G": {
+   "category": "air_purifier",
+   "type_label": "공기청정기",
+   "product": "미로 맑음 공기청정기",
+   "model_number": "MP18",
+   "controls": {
+    "Power": {
+     "kind": "toggle"
+    },
+    "OperationMode": {
+     "kind": "enum",
+     "values": [
+      "Manual",
+      "Auto",
+      "Sleep"
+     ]
+    },
+    "FanSpeed": {
+     "kind": "int_enum",
+     "values": [
+      1,
+      2,
+      3,
+      4
+     ]
+    },
+    "Timer": {
+     "kind": "int_enum",
+     "values": [
+      0,
+      2,
+      4,
+      8,
+      12
+     ]
+    },
+    "Mute": {
+     "kind": "toggle"
+    }
+   }
+  },
+  "MP600G": {
+   "category": "air_purifier",
+   "type_label": "공기청정기",
+   "product": "미로 맑음 공기청정기",
+   "model_number": "MP24",
+   "controls": {
+    "Power": {
+     "kind": "toggle"
+    },
+    "OperationMode": {
+     "kind": "enum",
+     "values": [
+      "Manual",
+      "Auto",
+      "Sleep"
+     ]
+    },
+    "FanSpeed": {
+     "kind": "int_enum",
+     "values": [
+      1,
+      2,
+      3,
+      4
+     ]
+    },
+    "Timer": {
+     "kind": "int_enum",
+     "values": [
+      0,
+      2,
+      4,
+      8,
+      12
+     ]
+    },
+    "Mute": {
+     "kind": "toggle"
+    }
+   }
+  },
+  "MPUV20": {
+   "category": "air_purifier",
+   "type_label": "공기청정기",
+   "product": "미로 바이러스 살균 공기청정기",
+   "model_number": "MSP20UV",
+   "controls": {
+    "Power": {
+     "kind": "toggle"
+    },
+    "OperationMode": {
+     "kind": "enum",
+     "values": [
+      "Manual",
+      "Auto",
+      "Sleep"
+     ]
+    },
+    "FanSpeed": {
+     "kind": "int_enum",
+     "values": [
+      1,
+      2,
+      3,
+      4
+     ]
+    },
+    "Timer": {
+     "kind": "int_enum",
+     "values": [
+      0,
+      2,
+      4,
+      8,
+      12
+     ]
+    },
+    "UltraViolet": {
+     "kind": "toggle"
+    }
+   }
+  },
+  "MPUV24": {
+   "category": "air_purifier",
+   "type_label": "공기청정기",
+   "product": "미로 바이러스 살균 공기청정기",
+   "model_number": "MSP24UV",
+   "controls": {
+    "Power": {
+     "kind": "toggle"
+    },
+    "OperationMode": {
+     "kind": "enum",
+     "values": [
+      "Manual",
+      "Auto",
+      "Sleep"
+     ]
+    },
+    "FanSpeed": {
+     "kind": "int_enum",
+     "values": [
+      1,
+      2,
+      3,
+      4
+     ]
+    },
+    "Timer": {
+     "kind": "int_enum",
+     "values": [
+      0,
+      2,
+      4,
+      8,
+      12
+     ]
+    },
+    "UltraViolet": {
+     "kind": "toggle"
+    }
+   }
+  },
+  "NR07": {
+   "category": "humidifier",
+   "type_label": "가습기",
+   "product": "완벽세척 가습기",
+   "model_number": "NR07",
+   "controls": {
+    "Power": {
+     "kind": "toggle"
+    },
+    "SteamLevel": {
+     "kind": "enum",
+     "values": [
+      "Off",
+      "Low",
+      "Mid",
+      "High"
+     ]
+    },
+    "Timer": {
+     "kind": "int_enum",
+     "values": [
+      0,
+      1,
+      4,
+      8
+     ]
+    },
+    "OperationMode": {
+     "kind": "enum",
+     "values": [
+      "Manual",
+      "Auto"
+     ]
+    }
+   }
+  },
+  "NR08": {
+   "category": "humidifier",
+   "type_label": "가습기",
+   "product": "완벽세척 가습기",
+   "model_number": "NR08",
+   "controls": {
+    "Power": {
+     "kind": "toggle"
+    },
+    "SteamLevel": {
+     "kind": "enum",
+     "values": [
+      "Off",
+      "Low",
+      "Mid",
+      "High"
+     ]
+    },
+    "Timer": {
+     "kind": "int_enum",
+     "values": [
+      0,
+      1,
+      4,
+      8
+     ]
+    },
+    "Mute": {
+     "kind": "toggle"
+    },
+    "LightMode": {
+     "kind": "single",
+     "values": [
+      "Off"
+     ]
+    },
+    "Brightness": {
+     "kind": "int_enum",
+     "values": [
+      1,
+      2,
+      3,
+      4,
+      5
+     ]
+    }
+   }
+  },
+  "NR10": {
+   "category": "humidifier",
+   "type_label": "가습기",
+   "product": "완벽살균 가습기",
+   "model_number": "NR10",
+   "controls": {
+    "Power": {
+     "kind": "toggle"
+    },
+    "OperationMode": {
+     "kind": "enum",
+     "values": [
+      "Manual",
+      "Auto"
+     ]
+    },
+    "SteamLevel": {
+     "kind": "enum",
+     "values": [
+      "Off",
+      "Low",
+      "Mid",
+      "High"
+     ]
+    },
+    "Timer": {
+     "kind": "int_enum",
+     "values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+     ]
+    },
+    "LightMode": {
+     "kind": "enum",
+     "values": [
+      "Off",
+      "Fix"
+     ]
+    },
+    "Brightness": {
+     "kind": "int_enum",
+     "values": [
+      1,
+      2,
+      3
+     ]
+    },
+    "LightColor": {
+     "kind": "enum",
+     "values": [
+      "ColdWhite",
+      "WarmWhite"
+     ]
+    }
+   }
+  },
+  "OSHS01": {
+   "category": "air_purifier",
+   "type_label": "공기청정기",
+   "product": "웨이븐-V",
+   "model_number": "WAVEN-V",
+   "controls": {
+    "Power": {
+     "kind": "toggle"
+    },
+    "OperationMode": {
+     "kind": "enum",
+     "values": [
+      "Manual",
+      "Auto",
+      "Sleep"
+     ]
+    },
+    "FanSpeed": {
+     "kind": "int_enum",
+     "values": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ]
+    },
+    "VentilationMode": {
+     "kind": "enum",
+     "values": [
+      "Cycle",
+      "ToIn",
+      "ToOut"
+     ]
+    }
+   }
+  },
+  "RD01": {
+   "category": "sensor",
+   "type_label": "센서",
+   "product": "미로 레이더",
+   "model_number": "RD01",
+   "controls": {
+    "Power": {
+     "kind": "toggle"
+    }
+   }
+  }
+ }
+}

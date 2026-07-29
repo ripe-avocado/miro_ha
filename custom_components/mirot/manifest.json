@@ -1,0 +1,12 @@
+{
+  "domain": "mirot",
+  "name": "MIRO SmartHome (미로 스마트홈)",
+  "codeowners": ["@ripe-avocado"],
+  "config_flow": true,
+  "documentation": "https://github.com/ripe-avocado/miro_ha",
+  "integration_type": "hub",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/ripe-avocado/miro_ha/issues",
+  "requirements": [],
+  "version": "0.2.0"
+}

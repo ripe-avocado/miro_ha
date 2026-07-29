@@ -1,0 +1,79 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "미로 계정",
+        "description": "'미로 스마트홈' 앱에서 쓰는 계정으로 로그인하세요. 미로는 '미로 스마트홈'과 '미로 홈링크' 두 앱을 따로 운영하며 서버가 서로 다릅니다. 기기가 '미로 홈링크' 쪽에 등록되어 있다면 여기서는 연동되지 않습니다.",
+        "data": {
+          "username": "아이디",
+          "password": "비밀번호"
+        }
+      },
+      "reauth_confirm": {
+        "title": "미로 재인증",
+        "description": "{username} 계정의 세션이 만료됐습니다. 비밀번호를 다시 입력해 주세요.",
+        "data": {
+          "password": "비밀번호"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "미로 서버에 연결할 수 없습니다.",
+      "invalid_auth": "아이디 또는 비밀번호가 올바르지 않습니다."
+    },
+    "abort": {
+      "already_configured": "이미 등록된 계정입니다.",
+      "reauth_successful": "재인증이 완료됐습니다."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "옵션",
+        "data": {
+          "scan_interval": "상태 확인 주기(초)"
+        },
+        "data_description": {
+          "scan_interval": "기기 상태를 얼마나 자주 물어볼지 정합니다. 짧을수록 반응이 빠르지만 서버 요청이 늘어납니다."
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "timer_remaining": { "name": "타이머 남은 시간" },
+      "pm25": { "name": "초미세먼지" },
+      "pm10": { "name": "미세먼지" },
+      "gas_mixture": { "name": "가스 농도" },
+      "filter_life": { "name": "필터 잔량" }
+    },
+    "binary_sensor": {
+      "battery_installed": { "name": "배터리 장착" },
+      "empty_water": { "name": "물 부족" },
+      "filter_expired": { "name": "필터 교체 필요" },
+      "remote_paired": { "name": "리모컨 연결" }
+    },
+    "select": {
+      "rotation_range": { "name": "회전 범위" },
+      "timer": { "name": "타이머" },
+      "steam_level": { "name": "분무 세기" },
+      "operation_mode": { "name": "운전 모드" },
+      "light_mode": { "name": "조명" },
+      "light_color": { "name": "조명 색" },
+      "brightness": { "name": "밝기" },
+      "ptc_level": { "name": "온풍 세기" },
+      "stage": { "name": "분사 단계" },
+      "fragrance": { "name": "향" },
+      "ventilation_mode": { "name": "환기 방향" }
+    },
+    "switch": {
+      "device_lock": { "name": "차일드락" },
+      "mute": { "name": "소리" },
+      "ultra_violet": { "name": "자외선 살균" },
+      "snooze": { "name": "취침 정지" },
+      "power_mode": { "name": "절전 모드" },
+      "rotation_mode": { "name": "좌우 회전" },
+      "rotation_mode_vertical": { "name": "상하 회전" }
+    }
+  }
+}

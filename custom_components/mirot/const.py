@@ -1,0 +1,70 @@
+"""미로 스마트홈 통합 상수."""
+
+from __future__ import annotations
+
+from typing import Final
+
+DOMAIN: Final = "mirot"
+
+CONF_CLIENT_ID: Final = "client_id"
+CONF_ACCESS_TOKEN: Final = "access_token"
+CONF_SCAN_INTERVAL: Final = "scan_interval"
+
+DEFAULT_SCAN_INTERVAL: Final = 5
+MIN_SCAN_INTERVAL: Final = 5
+MAX_SCAN_INTERVAL: Final = 300
+
+MANUFACTURER: Final = "MIRO"
+
+# --- API 상수 (앱에 하드코딩된 값) ------------------------------------------
+
+API_URL: Final = (
+    "https://l5n4phtmqg.execute-api.ap-northeast-2.amazonaws.com/prod/openapi/v2/api"
+)
+OPT_AUTHORIZATION: Final = "b3a46c61-b3d6-404b-88b9-dafa4aae0e24"
+AES_KEY: Final = b"A09E2CEC38800C8586EF83C173B141D1"
+AES_IV: Final = b"3AEA3715C6BFDB51"
+APP_VERSION: Final = "2.1.25"
+UI_VERSION: Final = "0.1.28"
+
+# 토큰 만료를 뜻하는 서버 오류 코드
+AUTH_ERROR_CODES: Final = (-120, -121)
+
+# --- 기기 분류 --------------------------------------------------------------
+# models.json 의 category 값. 어떤 주 엔티티를 만들지 결정한다.
+
+CATEGORY_FAN: Final = "fan"
+CATEGORY_AIR_PURIFIER: Final = "air_purifier"
+CATEGORY_HUMIDIFIER: Final = "humidifier"
+CATEGORY_DIFFUSER: Final = "diffuser"
+CATEGORY_SENSOR: Final = "sensor"
+CATEGORY_UNKNOWN: Final = "unknown"
+
+# HA fan 플랫폼으로 표현하는 분류. 공기청정기도 HA 관례상 fan 이다.
+FAN_CATEGORIES: Final = (CATEGORY_FAN, CATEGORY_AIR_PURIFIER)
+
+# --- 속성 이름 --------------------------------------------------------------
+
+ATTR_POWER: Final = "Power"
+ATTR_FAN_SPEED: Final = "FanSpeed"
+ATTR_OPERATION_MODE: Final = "OperationMode"
+ATTR_ROTATION_RANGE: Final = "RotationRange"
+ATTR_ROTATION_MODE: Final = "RotationMode"
+ATTR_TIMER: Final = "Timer"
+ATTR_TIMER_REMAIN: Final = "TimerRemainMinute"
+ATTR_CONNECTIVITY: Final = "Connectivity"
+ATTR_CURRENT_ANGLE: Final = "CurrentAngle"
+ATTR_HUMIDITY: Final = "Humidity"
+
+# 오프라인 기기는 센서값 자리에 이 문자열이 온다.
+UNAVAILABLE_VALUE: Final = "--"
+
+# 수동 조작을 뜻하는 운전 모드. 이 모드에서만 풍량을 직접 바꿀 수 있다.
+PRESET_MANUAL: Final = "Manual"
+
+# 회전을 켤 때 쓸 기본 각도. 모델이 지원하는 값 중에서 고른다.
+PREFERRED_ROTATION_RANGE: Final = 90
+
+# 주 엔티티가 직접 다루는 속성. select/switch 로 중복 노출하지 않는다.
+FAN_OWNED_ATTRS: Final = (ATTR_POWER, ATTR_FAN_SPEED, ATTR_OPERATION_MODE)
+HUMIDIFIER_OWNED_ATTRS: Final = (ATTR_POWER, ATTR_OPERATION_MODE)

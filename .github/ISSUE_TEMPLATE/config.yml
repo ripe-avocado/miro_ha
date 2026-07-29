@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 기기가 '미로 홈링크' 앱에 등록되어 있어요
+    url: https://www.home-assistant.io/integrations/tuya/
+    about: >
+      미로는 '미로 스마트홈'과 '미로 홈링크' 두 앱을 따로 운영하며 서버가 다릅니다.
+      홈링크 쪽은 Tuya 플랫폼이라 이 통합으로는 연동되지 않습니다.
+      HA의 Tuya 통합 또는 tuya-local 을 알아보세요.

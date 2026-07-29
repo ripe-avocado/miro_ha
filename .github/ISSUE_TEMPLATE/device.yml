@@ -1,0 +1,57 @@
+name: 기기 지원 요청·확인
+description: 표에 없는 기기를 쓰거나, 정의만 검증된 기기가 실제로 동작하는지 알려주실 때
+labels: [device]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        README의 27종 중 **실기기로 검증된 것은 MF03과 NR07뿐**입니다.
+        나머지는 서버 정의만 확인한 상태라, 실제로 써보신 결과가 그대로 근거가 됩니다.
+        되든 안 되든 알려주시면 표에 반영하겠습니다.
+
+  - type: input
+    id: model
+    attributes:
+      label: 기기 모델
+      placeholder: "MP600G"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: result
+    attributes:
+      label: 결과
+      options:
+        - 잘 동작합니다
+        - 일부만 동작합니다
+        - 전혀 동작하지 않습니다
+        - 아직 안 써봤고, 지원 요청입니다
+    validations:
+      required: true
+
+  - type: textarea
+    id: detail
+    attributes:
+      label: 자세히
+      description: |
+        어떤 엔티티가 생겼고, 무엇이 되고 무엇이 안 되는지 적어주세요.
+        엔티티가 아예 안 생겼다면 그것도 알려주세요.
+
+  - type: textarea
+    id: raw
+    attributes:
+      label: 기기 응답
+      description: |
+        지원 여부 판단에 이 출력이 꼭 필요합니다.
+
+        ```bash
+        pip3 install requests cryptography
+        python3 tools/miro_cli.py login
+        python3 tools/miro_cli.py devices --raw-json
+        python3 tools/miro_cli.py status
+        ```
+
+        **시리얼 번호는 가려도 됩니다.**
+      render: json
+    validations:
+      required: true

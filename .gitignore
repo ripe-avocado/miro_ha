@@ -1,0 +1,38 @@
+# APK 원본 / 디컴파일 산출물
+apk/
+tmp/
+work/
+*.apk
+*.dex
+
+# 미로 서버에서 받은 UI 메타데이터 원본.
+# tools/gen_models.py --download 로 언제든 다시 받을 수 있으므로 커밋하지 않는다.
+reference/
+
+# 캡처·덤프
+capture/
+*.har
+*.pcap
+*.pcapng
+
+# 자격증명
+.env
+.miro_cli.json
+*credentials*.json
+*token*.json
+
+# 파이썬
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# macOS
+.DS_Store
+
+# 작업 지시서 (개인 정보 포함)
+CLAUDE.md
+.claude/
+
+# 리버싱 작업 노트 (api-spec.md 등). 공개하지 않는다
+notes/
