@@ -157,6 +157,10 @@ SmartThings 연동에서 풍량 4단계·회전 2종으로 뭉개지던 것과 �
 - 통합 아이콘은 **Home Assistant 2026.3 이상**에서만 보입니다. 그 아래 버전에서는
   `icon not available` 로 남지만 동작에는 아무 영향이 없습니다.
 
+## 변경 이력
+
+[CHANGELOG.md](CHANGELOG.md) 에 버전별로 무엇이 바뀌었는지 적어뒀습니다.
+
 ## 도구
 
 - [tools/miro_cli.py](tools/miro_cli.py) — HA 없이 API를 직접 확인하는 CLI.
