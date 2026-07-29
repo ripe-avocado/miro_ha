@@ -14,6 +14,12 @@ DEFAULT_SCAN_INTERVAL: Final = 5
 MIN_SCAN_INTERVAL: Final = 5
 MAX_SCAN_INTERVAL: Final = 300
 
+# 기기가 전부 꺼져 있을 때 쓰는 주기(초).
+#
+# 꺼진 기기를 5초마다 확인해 봐야 나오는 게 없다. 서버에 보내는 요청만 늘어난다.
+# 하나라도 켜지면 곧바로 설정된 주기로 돌아간다.
+IDLE_SCAN_INTERVAL: Final = 30
+
 MANUFACTURER: Final = "MIRO"
 
 # --- API 상수 (앱에 하드코딩된 값) ------------------------------------------

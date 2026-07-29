@@ -28,6 +28,7 @@ from .const import (
     CONF_SCAN_INTERVAL,
     DEFAULT_SCAN_INTERVAL,
     DOMAIN,
+    IDLE_SCAN_INTERVAL,
 )
 from .models import ModelSpec, get_model, preload
 
@@ -88,6 +89,11 @@ class MiroCoordinator(DataUpdateCoordinator[dict[str, dict[str, Any]]]):
         )
         self.client = client
         self.entry = entry
+        # 켜져 있을 때 주기(설정값)와 다 꺼져 있을 때 주기.
+        # 설정 주기가 이미 더 길면 그대로 쓴다. 느리게 하려는 게 목적이지
+        # 사용자가 정한 것보다 빠르게 돌리려는 게 아니다.
+        self._active_interval = interval
+        self._idle_interval = max(interval, IDLE_SCAN_INTERVAL)
         # serialno -> device_list 의 기기 정보(model, nickname, feature 등)
         self.devices: dict[str, dict[str, Any]] = {}
         # serialno -> 모델 정의
@@ -220,7 +226,33 @@ class MiroCoordinator(DataUpdateCoordinator[dict[str, dict[str, Any]]]):
         self._failures = 0
         self._persist_token()
         self._merge_optimistic(states)
+        self._apply_interval(states)
         return states
+
+    def _apply_interval(self, states: dict[str, dict[str, Any]]) -> None:
+        """기기가 전부 꺼져 있으면 주기를 늦춘다.
+
+        코디네이터는 매 갱신이 끝난 뒤 다음 실행을 예약하므로, 여기서 값을
+        바꿔 두면 다음 주기부터 적용된다.
+        """
+        powers = [
+            state.get(ATTR_POWER)
+            for state in states.values()
+            if state.get(ATTR_POWER) is not None
+        ]
+        # 전원을 아무도 보고하지 않으면 켜졌는지 알 수 없다. 빠른 쪽으로 둔다.
+        active = not powers or any(power == "On" for power in powers)
+
+        target = timedelta(
+            seconds=self._active_interval if active else self._idle_interval
+        )
+        if self.update_interval != target:
+            _LOGGER.debug(
+                "폴링 주기를 %d초로 바꾼다 (켜진 기기 %s)",
+                int(target.total_seconds()),
+                "있음" if active else "없음",
+            )
+            self.update_interval = target
 
     # --- 제어 -------------------------------------------------------------
 
